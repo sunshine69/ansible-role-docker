@@ -16,8 +16,3 @@
       - "docker-ce-cli{{ docker_version|ternary('=' ~ docker_version, '') }}"
     state: present
     update_cache: yes
-
-- name: install thin provisioning tools
-  apt:
-    name: thin-provisioning-tools
-    state: present

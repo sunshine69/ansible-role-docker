@@ -1,20 +1,32 @@
 # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-install.html
-- name: enable docker repo
-  yum_repository:
-    baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
-    name: docker
-    gpgkey: https://download.docker.com/linux/centos/gpg
-    gpgcheck: yes
-    description: Docker repository
+- name: Install docker for redhat 7 based system
+  block:
+    - name: enable docker repo
+      yum_repository:
+        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+        name: docker
+        gpgkey: https://download.docker.com/linux/centos/gpg
+        gpgcheck: yes
+        description: Docker repository
 
-- name: install docker
-  yum:
-    name:
-      - "docker-ce{{ docker_version|ternary('-' + docker_version, '') }}"
-      - "docker-ce-cli{{ docker_version|ternary('-' + docker_version, '') }}"
-    state: installed
+    - name: install docker
+      yum:
+        name:
+          - "docker-ce{{ docker_version|ternary('-' + docker_version, '') }}"
+          - "docker-ce-cli{{ docker_version|ternary('-' + docker_version, '') }}"
+        state: installed
 
-- name: install docker storage dependencies
-  yum:
-    name: lvm2
-    state: installed
+  when: ansible_distribution_major_version == "7"
+
+
+- name: Install docker for redhat 8 based system
+  block:
+    - name: Add docker repo
+      shell: "dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo"
+    - name: Install docker
+      dnf:
+        name: "docker-ce"
+        state: present
+        update_cache: yes
+      #shell: "dnf install docker-ce --nobest -y"
+  when: ansible_distribution_major_version == "8"
