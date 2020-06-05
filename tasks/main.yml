@@ -62,7 +62,7 @@
     minute: "{{ docker_clean_image_at_min|default(0) }}"
     hour: "{{ docker_clean_image_at_hour|default(0) }}"
     state: present
-  when: docker_clean_image_time|default(True)
+  when: docker_clean_image_enabled|default(True)
 
 - name: ensure docker is started and enabled
   service:
