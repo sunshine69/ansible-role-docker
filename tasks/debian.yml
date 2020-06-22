@@ -2,7 +2,7 @@
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-    id: "{{ ubuntu_docker_repo_key[ansible_distribution_release] }}"
+    #id: "{{ ubuntu_docker_repo_key[ansible_distribution_release] }}"
 
 - name: install docker repo
   apt_repository:
@@ -16,8 +16,3 @@
       - "docker-ce-cli{{ docker_version|ternary('=' ~ docker_version, '') }}"
     state: present
     update_cache: yes
-
-- name: install thin provisioning tools
-  apt:
-    name: thin-provisioning-tools
-    state: present
