@@ -2,7 +2,7 @@
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-    id: "{{ ubuntu_docker_repo_key[ansible_distribution_release] }}"
+    #id: "{{ ubuntu_docker_repo_key[ansible_distribution_release] }}"
 
 - name: install docker repo
   apt_repository:
